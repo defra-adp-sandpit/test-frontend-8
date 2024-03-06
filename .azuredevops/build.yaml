@@ -1,0 +1,56 @@
+parameters:
+- name: deployFromFeature
+  displayName: "Deploy from Feature Branch"
+  type: boolean
+  default: false
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+  drafts: false
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - "*"
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+
+resources:
+  repositories:
+    - repository: DEFRA-ADPPipelineCommon
+      name: DEFRA/adp-pipeline-common
+      endpoint: DEFRA
+      type: github
+      ref: refs/heads/main
+
+extends:
+  template: /pipelines/common-app-build.yaml@DEFRA-ADPPipelineCommon
+  parameters:
+    projectName: "test-frontend-8"
+    serviceName: "test-frontend-8"
+    deployFromFeature: ${{ parameters.deployFromFeature }}
+    appBuildConfig:
+      appFrameworkType: "nodejs"    
+      projectPath: "./package.json"
+      manifestPath: "./package.json"
+      imageRepoName: "test-frontend-8"
+    appTestConfig:
+      testFilePath: "./docker-compose.test.yaml"
+    appDeployConfig:
+      filepath: "./appConfig"  
+      filetype: "yaml"
+      variableGroups:
+        - test-frontend-8-<environment>
+      variables:
+        - test-frontend-8-APPINSIGHTS-CONNECTIONSTRING

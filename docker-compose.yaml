@@ -1,0 +1,10 @@
+services:
+  test-frontend-8:
+    build:
+      context: .
+      target: production
+    image: test-frontend-8
+    container_name: test-frontend-8
+    environment:
+      APPINSIGHTS_CLOUDROLE: test-frontend-8-local
+      APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}

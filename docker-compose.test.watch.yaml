@@ -1,0 +1,6 @@
+services:
+  test-frontend-8:
+    command: >
+      sh -c "npm run test:watch"
+    volumes:
+      - ./.git:/home/node/.git

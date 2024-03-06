@@ -1,0 +1,3 @@
+services:
+  test-frontend-8:
+    command: npm run start:debug
